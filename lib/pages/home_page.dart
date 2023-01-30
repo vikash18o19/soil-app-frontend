@@ -86,25 +86,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onTap: () => {},
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.logout_rounded,
-                  size: 35,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-                onTap: () => {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  ),
-                },
-              ),
+              
               ListTile(
                 leading: Icon(
                   Icons.phone_outlined,
@@ -128,6 +110,25 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(fontSize: 30, color: Colors.white),
                 ),
                 onTap: () => {},
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout_rounded,
+                  size: 35,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Logout',
+                  style: TextStyle(fontSize: 30, color: Colors.white),
+                ),
+                onTap: () => {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  ),
+                },
               ),
             ],
           ),
