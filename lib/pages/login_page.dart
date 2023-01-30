@@ -24,38 +24,54 @@ class LoginPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 50,),
-              // logo
-                Image.asset('lib/images/loginscreen/TextLogo.png', 
-                  height: 250,width:250,),
-                
+                const SizedBox(
+                  height: 50,
+                ),
+                // logo
+                Image.asset(
+                  'lib/images/loginscreen/TextLogo.png',
+                  height: 250,
+                  width: 250,
+                ),
+
                 // const SizedBox(height: 50,),
-              // welcome back
-                Text('Please Login to continue!',
-                style: TextStyle(color: Colors.brown, 
-                fontSize: 20),),
-          
-                const SizedBox(height: 25,),
-              // username
+                // welcome back
+                Text(
+                  'Please Login to continue!',
+                  style: TextStyle(color: Colors.brown, fontSize: 20),
+                ),
+
+                const SizedBox(
+                  height: 25,
+                ),
+                // username
                 MyTextField(
-                  controller: usernameController ,
-                  hintText: 'UserName',
+                  controller: usernameController,
+                  hintText: 'User Name',
                   obscureText: false,
                 ),
-                const SizedBox(height: 10,),
-              // password
+                const SizedBox(
+                  height: 10,
+                ),
+                // password
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
-                const SizedBox(height: 10,),
-              // forgot password
-                Text('Forgot Password?',
-                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), 
+                const SizedBox(
+                  height: 10,
                 ),
-                const SizedBox(height: 20,),
-              // sign in
+                // forgot password
+                Text(
+                  'Forgot Password?',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                // sign in
                 MyButton(
                   onTap: ()=>{
                     Navigator.push(
@@ -66,8 +82,10 @@ class LoginPage extends StatelessWidget {
                     ),
                   },
                 ),
-                const SizedBox(height: 20,),
-              // signup
+                const SizedBox(
+                  height: 20,
+                ),
+                // signup
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -75,20 +93,21 @@ class LoginPage extends StatelessWidget {
                       'Not a Member?',
                       style: TextStyle(color: Colors.brown),
                     ),
-                    const SizedBox(width: 4,),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     const Text(
                       'Sign Up here!',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                      ),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ],
                 )
-            ],),
+              ],
+            ),
           ),
         ),
-      ) ,
+      ),
     );
   }
 }
