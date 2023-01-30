@@ -1,15 +1,19 @@
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter/material.dart';
 import 'package:soil_app/components/button.dart';
 import 'package:soil_app/components/textfield.dart';
+import 'package:soil_app/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() {}
+  void signUserIn() {
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,14 @@ class LoginPage extends StatelessWidget {
                 ),
                 // sign in
                 MyButton(
-                  onTap: signUserIn,
+                  onTap: ()=>{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    ),
+                  },
                 ),
                 const SizedBox(
                   height: 20,
