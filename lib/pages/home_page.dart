@@ -111,28 +111,32 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: GNav(backgroundColor: (Colors.brown[700])!, tabs: [
-        GButton(
-          icon: Icons.home_outlined,
-          iconSize: 35,
-          iconColor: Colors.white,
-        ),
-        GButton(
-          icon: Icons.camera_outlined,
-          iconSize: 35,
-          iconColor: Colors.white,
-        ),
-        GButton(
-          icon: Icons.history_outlined,
-          iconSize: 35,
-          iconColor: Colors.white,
-        ),
-        GButton(
-          icon: Icons.account_circle_outlined,
-          iconSize: 35,
-          iconColor: Colors.white,
-        ),
-      ]),
+      bottomNavigationBar: GNav(
+          backgroundColor: (Colors.brown[700])!,
+          rippleColor: (Colors.brown[400])!,
+          hoverColor: (Colors.white70),
+          tabs: [
+            GButton(
+              icon: Icons.home_outlined,
+              iconSize: 35,
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.camera_outlined,
+              iconSize: 35,
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.history_outlined,
+              iconSize: 35,
+              iconColor: Colors.white,
+            ),
+            GButton(
+              icon: Icons.account_circle_outlined,
+              iconSize: 35,
+              iconColor: Colors.white,
+            ),
+          ]),
       body: Column(
         children: [
           SizedBox(
