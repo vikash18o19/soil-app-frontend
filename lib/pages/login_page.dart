@@ -11,9 +11,7 @@ class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() {
-    
-  }
+  void signUserIn() {}
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +71,11 @@ class LoginPage extends StatelessWidget {
                 ),
                 // sign in
                 MyButton(
-                  onTap: ()=>{
+                  onTap: () => {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => HomePage(),
                       ),
                     ),
                   },
