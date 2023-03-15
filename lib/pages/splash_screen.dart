@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soil_app/pages/login_page.dart';
+import 'package:soil_app/utils/Colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 201, 173, 162),
+      backgroundColor: AppColors.c0,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

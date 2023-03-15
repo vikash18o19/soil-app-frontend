@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 String url =
-    'https://24a5-2401-4900-1ca9-3807-91e2-2935-7fb0-e890.in.ngrok.io/predict';
+    'https://5665-2401-4900-3cb1-9261-418c-a5b3-3b0d-40aa.in.ngrok.io/predict';
 
 class ImgPicker extends StatefulWidget {
   const ImgPicker({Key? key}) : super(key: key);
