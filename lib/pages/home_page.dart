@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:soil_app/components/map.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/login_page.dart';
@@ -113,12 +114,16 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 30, color: AppColors.c0),
                   ),
                   onTap: () => {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    ),
+                    SharedPreferences.getInstance().then((prefs) {
+                      prefs.remove('token');
+                      prefs.remove('refreshToken');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        ),
+                      );
+                    })
                   },
                 ),
                 ListTile(

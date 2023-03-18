@@ -16,5 +16,6 @@ class LocationServices {
       return [currentPosition.latitude, currentPosition.longitude];
     }
     return [0, 0];
+    
   }
 }

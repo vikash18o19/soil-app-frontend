@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:soil_app/components/button.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatelessWidget {
   Future<void> sendRequest(
       BuildContext context, String email, String password) async {
     final url = Uri.parse(
-        'https://86b3-2401-4900-3b27-c3c-4ddf-41a5-4feb-b1a0.in.ngrok.io/user/signin'); // replace with your API URL
+        'https://ea16-2401-4900-1ca8-6bdb-1000-f432-ab86-3beb.in.ngrok.io/user/signin');
 
     final response = await http.post(
       url,
@@ -32,6 +33,15 @@ class LoginPage extends StatelessWidget {
     );
 
     if (response.statusCode == 200) {
+      // save token and refreshToken to shared_preferences
+      final data = json.decode(response.body)['data'];
+      final token = data['token'];
+      final refreshToken = data['refreshToken'];
+      await SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('token', token);
+        prefs.setString('refreshToken', refreshToken);
+      });
+
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
         context,
@@ -39,7 +49,6 @@ class LoginPage extends StatelessWidget {
         (Route<dynamic> route) => false,
       );
     } else {
-      // show an error message if request failed
       final error = json.decode(response.body)['message'];
       showDialog(
         context: context,
@@ -122,14 +131,14 @@ class LoginPage extends StatelessWidget {
                 // sign in
                 MyButton(
                   onTap: () => {
-                    // sendRequest(context, usernameController.text,
-                    //     passwordController.text)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    ),
+                    sendRequest(context, usernameController.text,
+                        passwordController.text)
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => HomePage(),
+                    //   ),
+                    // ),
                   },
                 ),
                 const SizedBox(
