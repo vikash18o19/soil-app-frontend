@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:soil_app/components/map.dart';
+// import 'package:soil_app/components/map.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/login_page.dart';
 import 'package:soil_app/utils/Colors.dart';

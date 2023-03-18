@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 
 class LocationServices {
-  Future<List> getLocation() async {
+  static Future<List> getLocation() async {
     //returns list of co-ordinates
     Position currentPosition;
     LocationPermission permission = await Geolocator.checkPermission();

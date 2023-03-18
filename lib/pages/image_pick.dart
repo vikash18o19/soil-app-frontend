@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:soil_app/utils/location.dart';
 
 String url =
-    'https://5665-2401-4900-3cb1-9261-418c-a5b3-3b0d-40aa.in.ngrok.io/predict';
+    'https://9e7d-2401-4900-384f-2752-2976-1ea0-b12b-3b11.in.ngrok.io/predict';
+String API = '';
 
 class ImgPicker extends StatefulWidget {
   const ImgPicker({Key? key}) : super(key: key);
@@ -21,6 +23,9 @@ class _ImgPicker extends State<ImgPicker> {
   String prediction = "upload to get prediction";
   var Status = 0;
   var isFetch = 0;
+  num lat = 0;
+  num long = 0;
+  bool loc_avail = false;
 
   Future<void> pickimagefromgallery() async {
     final imagepicked = await ImagePicker().pickImage(
@@ -28,6 +33,7 @@ class _ImgPicker extends State<ImgPicker> {
     );
     if (imagepicked != null) {
       setState(() {
+        loc_avail = false;
         Status = 0;
         image = File(imagepicked.path);
       });
@@ -39,6 +45,7 @@ class _ImgPicker extends State<ImgPicker> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (imagepicked != null) {
       setState(() {
+        loc_avail = false;
         Status = 0;
         image = File(imagepicked.path);
       });
@@ -56,10 +63,22 @@ class _ImgPicker extends State<ImgPicker> {
   Future<String> sendImageToServer(File imageFile, String url) async {
     final request = http.MultipartRequest('POST', Uri.parse(url));
     final image = await http.MultipartFile.fromPath('image', imageFile.path);
+
     setState(() {
       isFetch = 1;
     });
+    final List co_ordinates = await LocationServices.getLocation();
+    print(List);
+    setState(() {
+      loc_avail = true;
+      lat = co_ordinates[0];
+      long = co_ordinates[1];
+    });
+    // String latlong = json.encode(co_ordinates);
+    // request.fields['coordinates'] = latlong;
+
     request.files.add(image);
+
     print("initiating request..");
     final response = await request.send();
 
@@ -75,6 +94,10 @@ class _ImgPicker extends State<ImgPicker> {
       });
       throw Exception('Failed to upload image');
     }
+  }
+
+  Future<String> savePrediction() async {
+    return '';
   }
 
   @override
@@ -105,7 +128,14 @@ class _ImgPicker extends State<ImgPicker> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Text(prediction),
+                    loc_avail == false
+                        ? Text(prediction)
+                        : Text('Prediction: ' +
+                            '$prediction' +
+                            ' location: ' +
+                            '$lat' +
+                            ' , ' +
+                            '$long'),
                     const SizedBox(
                       height: 30,
                     ),
@@ -152,12 +182,6 @@ class _ImgPicker extends State<ImgPicker> {
                     image != null && Status != 200
                         ? ElevatedButton.icon(
                             onPressed: () {
-                              print("clicked");
-                              if (image != null) {
-                                print("image present");
-                              } else {
-                                print("image not present");
-                              }
                               sendImageToServer(image!, url).then((response) {
                                 // Handle the response from the server
 
@@ -185,9 +209,18 @@ class _ImgPicker extends State<ImgPicker> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ))
-                        : const SizedBox(
-                            height: 30,
-                          ),
+                        : ElevatedButton.icon(
+                            onPressed: () => {},
+                            style: const ButtonStyle(
+                                minimumSize:
+                                    MaterialStatePropertyAll(Size(220, 40)),
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.brown)),
+                            icon: SizedBox.square(
+                              dimension: 35,
+                              child: Icon(Icons.save_rounded),
+                            ),
+                            label: const Text("Save Prediction")),
                     SizedBox(
                       height: 30,
                     ),
