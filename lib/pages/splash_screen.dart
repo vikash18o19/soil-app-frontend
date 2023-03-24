@@ -21,27 +21,42 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.c0,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 200,
-            ),
-            Image.asset(
-              'lib/images/loginscreen/TextLogo.png',
-              height: 300,
-              width: 300,
-            ),
-            SizedBox(
-              height: 200,
-            ),
-            Text(
-              "The Soil App | Version 0.1",
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.c1,
+              AppColors.c2,
+              AppColors.c3,
+              AppColors.c4,
+              AppColors.c5,
+            ],
+          )
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 200,
+              ),
+              Image.asset(
+                'lib/images/loginscreen/TextLogo.png',
+                height: 300,
+                width: 300,
+              ),
+              SizedBox(
+                height: 200,
+              ),
+              Text(
+                "The Soil App | Version 0.1",
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );

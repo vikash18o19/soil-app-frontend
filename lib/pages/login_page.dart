@@ -7,13 +7,42 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:soil_app/components/button.dart';
 import 'package:soil_app/components/textfield.dart';
+import 'package:soil_app/pages/forgotpassword_page.dart';
 import 'package:soil_app/pages/home_page.dart';
 import 'package:soil_app/utils/Colors.dart';
+import 'package:soil_app/pages/signup_page.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  LoginPage({Key key = const ValueKey('login')}) : super(key:key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  bool isTapped = false;
+
+  void _onTapDown() {
+    setState(() {
+      isTapped = true;
+    }
+    );
+  }
+
+  void _onTapUp() {
+    setState(() {
+      isTapped = false;
+    });
+  }
+
+  void _onTapCancel() {
+    setState(() {
+      isTapped = false;
+    });
+  }
 
   Future<void> sendRequest(
       BuildContext context, String email, String password) async {
@@ -59,106 +88,166 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      backgroundColor: AppColors.c1,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                // logo
-                Image.asset(
-                  'lib/images/loginscreen/TextLogo.png',
-                  height: 250,
-                  width: 250,
-                ),
-
-                // const SizedBox(height: 50,),
-                // welcome back
-                // Text(
-                //   'Please Login to continue!',
-                //   style: TextStyle(
-                //       color: AppColors.c5,
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 20.0),
-                // ),
-
-                const SizedBox(
-                  height: 40,
-                ),
-                // username
-                MyTextField(
-                  controller: usernameController,
-                  hintText: 'User Name',
-                  obscureText: false,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // password
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // forgot password
-                Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                    color: AppColors.c4,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.c1,
+              AppColors.c2,
+              AppColors.c3,
+              AppColors.c4,
+              AppColors.c5,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // sign in
-                MyButton(
-                  onTap: () => {
-                    // sendRequest(context, usernameController.text,
-                    //     passwordController.text)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
+                  // logo
+                  Image.asset(
+                    'lib/images/loginscreen/TextLogo.png',
+                    height: 250,
+                    width: 250,
+                  ),
+      
+                  // const SizedBox(height: 50,),
+                  // welcome back
+                  // Text(
+                  //   'Please Login to continue!',
+                  //   style: TextStyle(
+                  //       color: AppColors.c5,
+                  //       fontWeight: FontWeight.bold,
+                  //       fontSize: 20.0),
+                  // ),
+      
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  // username
+                  MyTextField(
+                    controller: usernameController,
+                    hintText: 'User Name',
+                    obscureText: false,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // password
+                  MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // forgot password
+                  GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => ForgotpasswordPage(),
+                        )
+                      )
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: AppColors.c0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
                       ),
                     ),
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // signup
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not a Member?',
-                      style: TextStyle(
-                          color: AppColors.c4,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // sign in
+                  GestureDetector(
+                    onTapDown: (_) => _onTapDown(),
+                    onTapUp: (_) => _onTapUp(),
+                    onTapCancel: () => _onTapCancel(),
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        // sendRequest(context, usernameController.text,
+                        //     passwordController.text)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                        ),
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isTapped? AppColors.c0.withOpacity(0.3) : Colors.transparent,
+                        padding: const EdgeInsets.symmetric(horizontal: 133, vertical: 16),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100), side: BorderSide(color: AppColors.c0, width: 1.0,) ),
+                        ),
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: AppColors.c0,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  
+                      ),
                     ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      'Sign Up here!',
-                      style: TextStyle(
-                          color: AppColors.c5,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )
-              ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // signup
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a Member?',
+                        style: TextStyle(
+                            color: AppColors.c0,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      GestureDetector(
+                        onTap: ()=>{
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          ),
+                          setState(() {
+                            isTapped = true;
+                          },)
+                        },
+                        child: Text(
+                          'Sign Up here!',
+                          style: TextStyle(
+                              color: AppColors.c0,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              decoration: isTapped ?TextDecoration.underline:TextDecoration.none,
+                              ),
+                          
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

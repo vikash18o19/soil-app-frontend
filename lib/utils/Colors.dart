@@ -7,4 +7,5 @@ class AppColors {
   static Color c3 = Color.fromRGBO(148, 176, 183, 1);
   static Color c4 = Color.fromRGBO(118, 151, 160, 1);
   static Color c5 = Color.fromRGBO(74, 112, 122, 1);
+  static Color c6 = Color.fromRGBO(0, 0, 0, 1);
 }

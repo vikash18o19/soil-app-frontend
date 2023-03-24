@@ -20,10 +20,10 @@ class MyTextField extends StatelessWidget {
         obscureText: obscureText,
         cursorColor: AppColors.c3,
         decoration: InputDecoration(
-          fillColor: AppColors.c0,
+          fillColor: Colors.transparent,
           filled: true,
           hintText: hintText,
-          hintStyle: TextStyle(color: AppColors.c4),
+          hintStyle: TextStyle(color: AppColors.c0),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.c0,

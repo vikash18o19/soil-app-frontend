@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:soil_app/utils/Colors.dart';
 
 String url =
     'https://5665-2401-4900-3cb1-9261-418c-a5b3-3b0d-40aa.in.ngrok.io/predict';
@@ -80,7 +81,7 @@ class _ImgPicker extends State<ImgPicker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 201, 173, 162),
+      backgroundColor: AppColors.c2,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Center(
@@ -111,11 +112,11 @@ class _ImgPicker extends State<ImgPicker> {
                     ),
                     ElevatedButton.icon(
                         onPressed: () => pickimagefromgallery(),
-                        style: const ButtonStyle(
+                        style: ButtonStyle(
                             minimumSize:
                                 MaterialStatePropertyAll(Size(220, 40)),
                             backgroundColor:
-                                MaterialStatePropertyAll(Colors.brown)),
+                                MaterialStatePropertyAll(AppColors.c4)),
                         icon: SizedBox.square(
                           dimension: 35,
                           child: Icon(Icons.image),
@@ -130,11 +131,11 @@ class _ImgPicker extends State<ImgPicker> {
                     ),
                     ElevatedButton.icon(
                         onPressed: () => pickimagefromcamera(),
-                        style: const ButtonStyle(
+                        style: ButtonStyle(
                             minimumSize:
                                 MaterialStatePropertyAll(Size(220, 40)),
                             backgroundColor:
-                                MaterialStatePropertyAll(Colors.brown)),
+                                MaterialStatePropertyAll(AppColors.c4)),
                         icon: SizedBox.square(
                           dimension: 35,
                           child: Icon(
@@ -171,11 +172,11 @@ class _ImgPicker extends State<ImgPicker> {
                                 print('Error: $error');
                               });
                             },
-                            style: const ButtonStyle(
+                            style: ButtonStyle(
                                 minimumSize:
                                     MaterialStatePropertyAll(Size(220, 40)),
                                 backgroundColor:
-                                    MaterialStatePropertyAll(Colors.brown)),
+                                    MaterialStatePropertyAll(AppColors.c4)),
                             icon: SizedBox.square(
                               dimension: 35,
                               child: Icon(Icons.upload_file_rounded),
