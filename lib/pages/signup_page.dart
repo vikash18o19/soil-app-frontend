@@ -4,9 +4,14 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:soil_app/components/appbar2.dart';
 import 'package:soil_app/components/map.dart';
 import 'package:soil_app/components/textfield.dart';
+import 'package:soil_app/pages/home_page.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/login_page.dart';
 import 'package:soil_app/utils/Colors.dart';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -45,6 +50,52 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  Future<void> sendRequest(
+      BuildContext context,String firstName, String lastName, String phone, String email, String password) async {
+
+
+        String name = firstName + " " + lastName;
+    final url = Uri.parse(
+        'https://e5a5-117-99-233-208.in.ngrok.io/user/signup'); // replace with your API URL
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'name': name,
+        'phone': phone,
+        'email': email,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 201) {
+      // navigate to HomePage and prevent user from going back
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      // show an error message if request failed
+      final error = json.decode(response.body)['message'];
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(error),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,6 +214,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   onTapCancel: () => _onTapCancel(),
                   child: ElevatedButton(
                     onPressed: () => {
+                      if(passController.text==repassController.text){
+                        sendRequest(context, firstnameController.text, lastnameController.text, phonenoController.text, mailaddController.text, passController.text)
+                      }
+                      else{
+                        showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Error'),
+                                  content: Text("passwords don't match!"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              )
+                      }
                       
                     }, 
                     style: ElevatedButton.styleFrom(
