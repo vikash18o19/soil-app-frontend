@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:soil_app/components/button.dart';
@@ -13,7 +14,7 @@ import 'package:soil_app/utils/Colors.dart';
 import 'package:soil_app/pages/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key = const ValueKey('login')}) : super(key:key);
+  LoginPage({Key key = const ValueKey('login')}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -28,8 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   void _onTapDown() {
     setState(() {
       isTapped = true;
-    }
-    );
+    });
   }
 
   void _onTapUp() {
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> sendRequest(
       BuildContext context, String email, String password) async {
     final url = Uri.parse(
-        'https://e5a5-117-99-233-208.in.ngrok.io/user/signin'); // replace with your API URL
+        'https://6fda-2401-4900-3b32-135-f43d-eb5f-d9d8-89b6.in.ngrok.io/user/signin'); // replace with your API URL
 
     final response = await http.post(
       url,
@@ -61,6 +61,16 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
+      final data = json.decode(response.body)['data'];
+      final token = data['token'];
+      final refreshToken = data['refreshToken'];
+      final user = data['user'];
+      final userId = user['_id'];
+      await SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('token', token);
+        prefs.setString('refreshToken', refreshToken);
+        prefs.setString('userId', userId);
+      });
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
         context,
@@ -88,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -119,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 250,
                     width: 250,
                   ),
-      
+
                   // const SizedBox(height: 50,),
                   // welcome back
                   // Text(
@@ -129,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                   //       fontWeight: FontWeight.bold,
                   //       fontSize: 20.0),
                   // ),
-      
+
                   const SizedBox(
                     height: 40,
                   ),
@@ -155,10 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () => {
                       Navigator.push(
-                        context, 
-                        MaterialPageRoute(builder: (context) => ForgotpasswordPage(),
-                        )
-                      )
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotpasswordPage(),
+                          ))
                     },
                     child: Text(
                       'Forgot Password?',
@@ -179,20 +188,28 @@ class _LoginPageState extends State<LoginPage> {
                     onTapCancel: () => _onTapCancel(),
                     child: ElevatedButton(
                       onPressed: () => {
-                        // sendRequest(context, usernameController.text,
-                        //     passwordController.text)
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                        ),
+                        sendRequest(context, usernameController.text,
+                            passwordController.text)
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => HomePage(),
+                        //   ),
+                        // ),
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isTapped? AppColors.c0.withOpacity(0.3) : Colors.transparent,
-                        padding: const EdgeInsets.symmetric(horizontal: 133, vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100), side: BorderSide(color: AppColors.c0, width: 1.0,) ),
-                        ),
+                        backgroundColor: isTapped
+                            ? AppColors.c0.withOpacity(0.3)
+                            : Colors.transparent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 133, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            side: BorderSide(
+                              color: AppColors.c0,
+                              width: 1.0,
+                            )),
+                      ),
                       child: Text(
                         "Sign In",
                         style: TextStyle(
@@ -200,7 +217,6 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
-                  
                       ),
                     ),
                   ),
@@ -222,26 +238,29 @@ class _LoginPageState extends State<LoginPage> {
                         width: 8,
                       ),
                       GestureDetector(
-                        onTap: ()=>{
+                        onTap: () => {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SignUpPage(),
                             ),
                           ),
-                          setState(() {
-                            isTapped = true;
-                          },)
+                          setState(
+                            () {
+                              isTapped = true;
+                            },
+                          )
                         },
                         child: Text(
                           'Sign Up here!',
                           style: TextStyle(
-                              color: AppColors.c0,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              decoration: isTapped ?TextDecoration.underline:TextDecoration.none,
-                              ),
-                          
+                            color: AppColors.c0,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            decoration: isTapped
+                                ? TextDecoration.underline
+                                : TextDecoration.none,
+                          ),
                         ),
                       ),
                     ],

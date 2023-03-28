@@ -2,12 +2,12 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:soil_app/utils/Colors.dart';
+import 'package:soil_app/utils/location.dart';
 
-String url =
-    'https://5665-2401-4900-3cb1-9261-418c-a5b3-3b0d-40aa.in.ngrok.io/predict';
+String url = 'https://flask-ml-soil.azurewebsites.net/predict';
 
 class ImgPicker extends StatefulWidget {
   const ImgPicker({Key? key}) : super(key: key);
@@ -22,6 +22,9 @@ class _ImgPicker extends State<ImgPicker> {
   String prediction = "upload to get prediction";
   var Status = 0;
   var isFetch = 0;
+  num lat = 0;
+  num long = 0;
+  bool loc_avail = false;
 
   Future<void> pickimagefromgallery() async {
     final imagepicked = await ImagePicker().pickImage(
@@ -29,6 +32,7 @@ class _ImgPicker extends State<ImgPicker> {
     );
     if (imagepicked != null) {
       setState(() {
+        loc_avail = false;
         Status = 0;
         image = File(imagepicked.path);
       });
@@ -40,6 +44,7 @@ class _ImgPicker extends State<ImgPicker> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (imagepicked != null) {
       setState(() {
+        loc_avail = false;
         Status = 0;
         image = File(imagepicked.path);
       });
@@ -60,6 +65,13 @@ class _ImgPicker extends State<ImgPicker> {
     setState(() {
       isFetch = 1;
     });
+    final List co_ordinates = await LocationServices.getLocation();
+    print(List);
+    setState(() {
+      loc_avail = true;
+      lat = co_ordinates[0];
+      long = co_ordinates[1];
+    });
     request.files.add(image);
     print("initiating request..");
     final response = await request.send();
@@ -76,6 +88,46 @@ class _ImgPicker extends State<ImgPicker> {
       });
       throw Exception('Failed to upload image');
     }
+  }
+
+  Future<void> save() async {
+    var userId;
+    var token;
+    await SharedPreferences.getInstance().then((prefs) {
+      userId = prefs.getString('userId');
+      token = prefs.getString('token');
+    });
+    final url = Uri.parse(
+        'https://6fda-2401-4900-3b32-135-f43d-eb5f-d9d8-89b6.in.ngrok.io/prediction/save'); // replace with your API URL
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Bearer $token'
+      },
+      body: {
+        'latitude': lat.toString(),
+        'longitude': long.toString(),
+        'prediction': prediction,
+        'userId': userId,
+      },
+    );
+
+    final message = json.decode(response.body)['message'];
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Message'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -106,7 +158,14 @@ class _ImgPicker extends State<ImgPicker> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Text(prediction),
+                    loc_avail == false
+                        ? Text(prediction)
+                        : Text('Prediction: ' +
+                            '$prediction' +
+                            ' location: ' +
+                            '$lat' +
+                            ' , ' +
+                            '$long'),
                     const SizedBox(
                       height: 30,
                     ),
@@ -167,9 +226,20 @@ class _ImgPicker extends State<ImgPicker> {
                                   prediction = response;
                                 });
                               }).catchError((error) {
-                                print("error occured!!");
-                                // Handle any errors that occur
-                                print('Error: $error');
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('error'),
+                                    content: Text(error),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               });
                             },
                             style: ButtonStyle(
@@ -186,9 +256,30 @@ class _ImgPicker extends State<ImgPicker> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 25),
                             ))
-                        : const SizedBox(
-                            height: 30,
-                          ),
+                        : image != null
+                            ? ElevatedButton.icon(
+                                onPressed: () => {
+                                      save().then((response) {
+                                        // Handle the response from the server
+                                      }).catchError((error) {
+                                        print("error occured!!");
+                                        // Handle any errors that occur
+                                        print('Error: $error');
+                                      })
+                                    },
+                                style: const ButtonStyle(
+                                    minimumSize:
+                                        MaterialStatePropertyAll(Size(220, 40)),
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(Colors.brown)),
+                                icon: SizedBox.square(
+                                  dimension: 35,
+                                  child: Icon(Icons.save_rounded),
+                                ),
+                                label: const Text("Save Prediction"))
+                            : SizedBox(
+                                height: 30,
+                              ),
                     SizedBox(
                       height: 30,
                     ),
