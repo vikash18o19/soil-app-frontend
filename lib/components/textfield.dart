@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soil_app/utils/Colors.dart';
 
 class MyTextField extends StatelessWidget {
   final controller;
@@ -17,20 +18,20 @@ class MyTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        cursorColor: Color.fromARGB(255, 201, 173, 162),
+        cursorColor: AppColors.c3,
         decoration: InputDecoration(
-          fillColor: Colors.white,
+          fillColor: Colors.transparent,
           filled: true,
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey[500]),
+          hintStyle: TextStyle(color: AppColors.c0),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Color.fromARGB(255, 97, 68, 58),
+              color: AppColors.c0,
             ),
             borderRadius: BorderRadius.circular(100),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: AppColors.c0),
             borderRadius: BorderRadius.circular(100),
           ),
         ),
