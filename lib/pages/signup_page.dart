@@ -27,7 +27,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final passController = TextEditingController();
   final repassController = TextEditingController();
 
-  
   bool _signupProcess = false;
   bool isTapped = false;
 
@@ -51,6 +50,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> sendRequest(BuildContext context, String firstName,
       String lastName, String phone, String email, String password) async {
+    // setState(() {
+    //   _signupProcess = true;
+    // });
     String name = firstName + " " + lastName;
     final url = Uri.parse(
         'https://soil-app-backend.azurewebsites.net/user/signup'); // replace with your API URL
@@ -67,20 +69,21 @@ class _SignUpPageState extends State<SignUpPage> {
         'password': password,
       },
     );
-
+    print(response.statusCode);
     if (response.statusCode == 201) {
       final data = json.decode(response.body)['data'];
       final token = data['token'];
       final refreshToken = data['refreshToken'];
-      final userId = data['_id'];
+      final user = data['user'];
+      final userId = user['_id'];
       await SharedPreferences.getInstance().then((prefs) {
         prefs.setString('token', token);
         prefs.setString('refreshToken', refreshToken);
         prefs.setString('userId', userId);
       });
       setState(() {
-                          _signupProcess = false;
-                        });
+        _signupProcess = false;
+      });
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
         context,
@@ -89,8 +92,11 @@ class _SignUpPageState extends State<SignUpPage> {
       );
     } else {
       setState(() {
-                          _signupProcess = false;
-                        });
+        _signupProcess = false;
+      });
+      // setState(() {
+      //   _signupProcess = false;
+      // });
       // show an error message if request failed
       final error = json.decode(response.body)['message'];
       showDialog(
@@ -215,73 +221,75 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(
                 height: 25,
               ),
-              _signupProcess == false? GestureDetector(
-                onTapDown: (_) => _onTapDown(),
-                onTapUp: (_) => _onTapUp(),
-                onTapCancel: () => _onTapCancel(),
-                child: ElevatedButton(
-                  onPressed: () => {
-                    setState(() {
-                      _signupProcess = true;
-                    }),
-                    if (passController.text == repassController.text)
-                      {
-                        
-                        sendRequest(
-                            context,
-                            firstnameController.text,
-                            lastnameController.text,
-                            phonenoController.text,
-                            mailaddController.text,
-                            passController.text),
-                        // setState(() {
-                        //   _signupProcess = false;
-                        // })  
-                      }
-                    else
-                      {
-                        setState(() {
-                          _signupProcess = false;
-                        }), 
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Error'),
-                            content: Text("passwords don't match!"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('OK'),
-                              ),
-                            ],
+              _signupProcess == false
+                  ? GestureDetector(
+                      onTapDown: (_) => _onTapDown(),
+                      onTapUp: (_) => _onTapUp(),
+                      onTapCancel: () => _onTapCancel(),
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          if (passController.text == repassController.text)
+                            {
+                              setState(() {
+                                _signupProcess = true;
+                              }),
+                              sendRequest(
+                                  context,
+                                  firstnameController.text,
+                                  lastnameController.text,
+                                  phonenoController.text,
+                                  mailaddController.text,
+                                  passController.text),
+                              // setState(() {
+                              //   _signupProcess = false;
+                              // })
+                            }
+                          else
+                            {
+                              setState(() {
+                                _signupProcess = false;
+                              }),
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Error'),
+                                  content: Text("passwords don't match!"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            },
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isTapped
+                              ? AppColors.c0.withOpacity(0.3)
+                              : Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 133, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                              side: BorderSide(
+                                color: AppColors.c0,
+                                width: 1.0,
+                              )),
+                        ),
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: AppColors.c0,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                        )
-                      },
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isTapped
-                        ? AppColors.c0.withOpacity(0.3)
-                        : Colors.transparent,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 133, vertical: 16),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        side: BorderSide(
-                          color: AppColors.c0,
-                          width: 1.0,
-                        )),
-                  ),
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: AppColors.c0,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : CircularProgressIndicator(
+                      color: AppColors.c1,
                     ),
-                  ),
-                ),
-              )
-              : CircularProgressIndicator(color: AppColors.c1,),
             ],
           ),
         )),
