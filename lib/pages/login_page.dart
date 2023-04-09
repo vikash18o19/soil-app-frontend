@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool _loginProcess = false;
   bool isTapped = false;
 
   void _onTapDown() {
@@ -47,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> sendRequest(
       BuildContext context, String email, String password) async {
     final url = Uri.parse(
-        'https://6fda-2401-4900-3b32-135-f43d-eb5f-d9d8-89b6.in.ngrok.io/user/signin'); // replace with your API URL
+        'https://soil-app-backend.azurewebsites.net/user/signin'); // replace with your API URL
 
     final response = await http.post(
       url,
@@ -182,14 +183,21 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   // sign in
+                  _loginProcess==false?
                   GestureDetector(
                     onTapDown: (_) => _onTapDown(),
                     onTapUp: (_) => _onTapUp(),
                     onTapCancel: () => _onTapCancel(),
                     child: ElevatedButton(
                       onPressed: () => {
+                        setState(() {
+                          _loginProcess = true;
+                        }),
                         sendRequest(context, usernameController.text,
-                            passwordController.text)
+                            passwordController.text),
+                        setState(() {
+                          _loginProcess = false;
+                        }),
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(
@@ -210,6 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                               width: 1.0,
                             )),
                       ),
+                      
                       child: Text(
                         "Sign In",
                         style: TextStyle(
@@ -219,7 +228,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                  ),
+                  )
+                  :CircularProgressIndicator(color: AppColors.c1),
                   const SizedBox(
                     height: 20,
                   ),

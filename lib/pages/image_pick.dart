@@ -311,7 +311,7 @@ class _ImgPicker extends State<ImgPicker> {
                     SizedBox(
                       height: 300,
                     ),
-                    CircularProgressIndicator(color: Colors.brown[400]),
+                    CircularProgressIndicator(color: AppColors.c1),
                   ],
                 ),
         ),

@@ -4,6 +4,10 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:soil_app/components/textfield.dart';
 import 'package:soil_app/utils/Colors.dart';
 import 'package:soil_app/components/appbar2.dart';
+import 'login_page.dart';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ForgotpasswordPage extends StatefulWidget {
   const ForgotpasswordPage({super.key});
@@ -15,7 +19,11 @@ class ForgotpasswordPage extends StatefulWidget {
 class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
 
   final mailidController = TextEditingController();
+  final codeController = TextEditingController();
+  final passController = TextEditingController();
+  final repassController = TextEditingController();
 
+  bool isTokenSent = false;
   bool isTapped = false;
 
   void _onTapDown() {
@@ -36,6 +44,87 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
       isTapped = false;
     });
   }
+  
+  Future<void> sendMail(BuildContext context, String email) async {
+    final url = Uri.parse(
+        'https://soil-app-backend.azurewebsites.net/user/forgot-password'); // replace with your API URL
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'email': email,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+                          isTokenSent = true;
+                  });
+      
+    } else {
+      final error = json.decode(response.body)['message'];
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(error),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String token, String password, String repassword) async {
+    final url = Uri.parse(
+        'https://soil-app-backend.azurewebsites.net/user/reset-password'); // replace with your API URL
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        'passwordResetToken': token,
+        'password': password,
+        'rePassword': repassword
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+              isTokenSent = false;
+      });
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      final error = json.decode(response.body)['message'];
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(error),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +145,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
             ]
           )
         ),
-        child: Column(
+        child: isTokenSent==false? Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -95,7 +184,9 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
               onTapUp: (_) => _onTapUp(),
               onTapCancel: () => _onTapCancel(),
               child: ElevatedButton(
-                onPressed:() => {}, 
+                onPressed:() => {
+                  sendMail(context, mailidController.text)
+                }, 
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isTapped? AppColors.c0.withOpacity(0.3) : Colors.transparent,
                   padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 12),
@@ -110,6 +201,87 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                   ),
                 )),
             )
+          ],
+        ):Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AppBar2(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+              child: Text(
+                'Please enter the code sent on the mail and reset your password:',
+                
+                style: TextStyle(
+                  color: AppColors.c0,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'RobotoMono' 
+                ),
+            
+              ),
+            ),
+            SizedBox(
+              height: 1
+            ),
+            SizedBox(
+              height:50,
+              width: 400,
+              child: MyTextField(
+                controller: codeController, 
+                hintText: 'code', 
+                obscureText: false
+              )
+            ),
+            SizedBox(
+              height: 25
+            ),
+            SizedBox(
+              height:50,
+              width: 400,
+              child: MyTextField(
+                controller: passController, 
+                hintText: 'password', 
+                obscureText: true
+              )
+            ),
+            SizedBox(
+              height: 25
+            ),
+            SizedBox(
+              height:50,
+              width: 400,
+              child: MyTextField(
+                controller: repassController, 
+                hintText: 're-enter password', 
+                obscureText: true
+              )
+            ),
+            SizedBox(
+              height: 25
+            ),
+            GestureDetector(
+              onTapDown: (_) => _onTapDown(),
+              onTapUp: (_) => _onTapUp(),
+              onTapCancel: () => _onTapCancel(),
+              child: ElevatedButton(
+                onPressed:() => {
+                  resetPassword(context, codeController.text, passController.text, repassController.text)
+                }, 
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isTapped? AppColors.c0.withOpacity(0.3) : Colors.transparent,
+                  padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100), side: BorderSide(color: AppColors.c0, width: 1.0,) ),
+                ),
+                child: Text(
+                  'Reset password',
+                  style: TextStyle(
+                    color: AppColors.c0,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )),
+            )
+
           ],
         ),
       ),

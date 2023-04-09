@@ -27,6 +27,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final passController = TextEditingController();
   final repassController = TextEditingController();
 
+  
+  bool _signupProcess = false;
   bool isTapped = false;
 
   void _onTapDown() {
@@ -51,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
       String lastName, String phone, String email, String password) async {
     String name = firstName + " " + lastName;
     final url = Uri.parse(
-        'https://6fda-2401-4900-3b32-135-f43d-eb5f-d9d8-89b6.in.ngrok.io/user/signup'); // replace with your API URL
+        'https://soil-app-backend.azurewebsites.net/user/signup'); // replace with your API URL
 
     final response = await http.post(
       url,
@@ -76,6 +78,9 @@ class _SignUpPageState extends State<SignUpPage> {
         prefs.setString('refreshToken', refreshToken);
         prefs.setString('userId', userId);
       });
+      setState(() {
+                          _signupProcess = false;
+                        });
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
         context,
@@ -83,6 +88,9 @@ class _SignUpPageState extends State<SignUpPage> {
         (Route<dynamic> route) => false,
       );
     } else {
+      setState(() {
+                          _signupProcess = false;
+                        });
       // show an error message if request failed
       final error = json.decode(response.body)['message'];
       showDialog(
@@ -207,24 +215,34 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(
                 height: 25,
               ),
-              GestureDetector(
+              _signupProcess == false? GestureDetector(
                 onTapDown: (_) => _onTapDown(),
                 onTapUp: (_) => _onTapUp(),
                 onTapCancel: () => _onTapCancel(),
                 child: ElevatedButton(
                   onPressed: () => {
+                    setState(() {
+                      _signupProcess = true;
+                    }),
                     if (passController.text == repassController.text)
                       {
+                        
                         sendRequest(
                             context,
                             firstnameController.text,
                             lastnameController.text,
                             phonenoController.text,
                             mailaddController.text,
-                            passController.text)
+                            passController.text),
+                        // setState(() {
+                        //   _signupProcess = false;
+                        // })  
                       }
                     else
                       {
+                        setState(() {
+                          _signupProcess = false;
+                        }), 
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
@@ -238,7 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ],
                           ),
                         )
-                      }
+                      },
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isTapped
@@ -262,7 +280,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              ),
+              )
+              : CircularProgressIndicator(color: AppColors.c1,),
             ],
           ),
         )),
