@@ -90,7 +90,7 @@ class _ImgPicker extends State<ImgPicker> {
     }
   }
 
-  Future<void> save() async {
+  Future<void> save(context) async {
     var userId;
     var token;
     await SharedPreferences.getInstance().then((prefs) {
@@ -98,7 +98,7 @@ class _ImgPicker extends State<ImgPicker> {
       token = prefs.getString('token');
     });
     final url = Uri.parse(
-        'https://6fda-2401-4900-3b32-135-f43d-eb5f-d9d8-89b6.in.ngrok.io/prediction/save'); // replace with your API URL
+        'https://soil-app-backend.azurewebsites.net/prediction/save'); // replace with your API URL
 
     final response = await http.post(
       url,
@@ -114,20 +114,48 @@ class _ImgPicker extends State<ImgPicker> {
       },
     );
 
-    final message = json.decode(response.body)['message'];
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Message'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    if (response.statusCode == 201) {
+      final message = json.decode(response.body)['message'];
+      print(message);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Message'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => {
+                setState(() {
+                  image = null;
+                  Status = 0;
+                  lat = 0;
+                  long = 0;
+                  loc_avail = false;
+                  prediction = "upload to get prediction";
+                }),
+                Navigator.pop(context),
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      final message = json.decode(response.body)['message'];
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Message'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -259,7 +287,7 @@ class _ImgPicker extends State<ImgPicker> {
                         : image != null
                             ? ElevatedButton.icon(
                                 onPressed: () => {
-                                      save().then((response) {
+                                      save(context).then((response) {
                                         // Handle the response from the server
                                       }).catchError((error) {
                                         print("error occured!!");
