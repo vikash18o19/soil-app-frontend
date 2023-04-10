@@ -18,8 +18,9 @@ class MyTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        cursorColor: AppColors.c3,
+        cursorColor: AppColors.c5,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 20),
           fillColor: Colors.transparent,
           filled: true,
           hintText: hintText,

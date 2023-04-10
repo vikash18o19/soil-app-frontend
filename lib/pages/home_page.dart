@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:soil_app/pages/history.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/login_page.dart';
 import 'package:soil_app/utils/Colors.dart';
@@ -11,9 +12,7 @@ class HomePage extends StatefulWidget {
   static List<Widget> _widgetOptions = <Widget>[
     Container(),
     ImgPicker(),
-    Text(
-      'History',
-    ),
+    History(),
     Text(
       'Profile',
     ),
@@ -114,9 +113,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () => {
                     SharedPreferences.getInstance().then((prefs) {
-                      prefs.remove('token');
-                      prefs.remove('refreshToken');
-                      prefs.remove('userId');
+                      prefs.clear();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
