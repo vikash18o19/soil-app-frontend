@@ -4,6 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:soil_app/pages/history.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/login_page.dart';
+import 'package:soil_app/pages/soilProps.dart';
 import 'package:soil_app/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -64,6 +65,23 @@ class _HomePageState extends State<HomePage> {
                           color: AppColors.c0),
                     ),
                   ),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.account_tree_rounded,
+                    size: 35,
+                    color: AppColors.c0,
+                  ),
+                  title: Text(
+                    'Soil Properties AI',
+                    style: TextStyle(fontSize: 30, color: AppColors.c0),
+                  ),
+                  onTap: () => {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SoilPropsAi()),
+                    )
+                  },
                 ),
                 ListTile(
                   leading: Icon(
