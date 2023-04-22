@@ -153,6 +153,11 @@ class _HistoryState extends State<History> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.c4,
+      appBar: AppBar(
+        title: Text('My History'),
+        centerTitle: true,
+        backgroundColor: AppColors.c5,
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(

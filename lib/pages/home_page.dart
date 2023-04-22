@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:soil_app/pages/history.dart';
 import 'package:soil_app/pages/image_pick.dart';
+import 'package:soil_app/pages/my_acc.dart';
 import 'package:soil_app/pages/login_page.dart';
 import 'package:soil_app/pages/soilProps.dart';
 import 'package:soil_app/utils/Colors.dart';
@@ -13,10 +14,8 @@ class HomePage extends StatefulWidget {
   static List<Widget> _widgetOptions = <Widget>[
     Container(),
     ImgPicker(),
-    History(),
-    Text(
-      'Profile',
-    ),
+    SoilPropsAi(),
+    myAcc(),
   ];
 
   @override
@@ -48,129 +47,131 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: AppColors.c1,
         appBar: AppBar(
+          title: Text('The Soil App'),
+          centerTitle: true,
           backgroundColor: AppColors.c5,
         ),
-        drawer: Drawer(
-          child: Container(
-            color: AppColors.c4,
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  child: Center(
-                    child: Text(
-                      'Home',
-                      style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.c0),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.account_tree_rounded,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'Soil Properties AI',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => SoilPropsAi()),
-                    )
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.account_circle,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'My Account',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.history_outlined,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'My History',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings_applications_outlined,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'Settings',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout_rounded,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {
-                    SharedPreferences.getInstance().then((prefs) {
-                      prefs.clear();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                        (Route<dynamic> route) => false,
-                      );
-                    })
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.phone_outlined,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'Contact Us',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.info_outline,
-                    size: 35,
-                    color: AppColors.c0,
-                  ),
-                  title: Text(
-                    'About Us',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                  onTap: () => {},
-                ),
-              ],
-            ),
-          ),
-        ),
+        // drawer: Drawer(
+        //   child: Container(
+        //     color: AppColors.c4,
+        //     child: ListView(
+        //       children: [
+        //         DrawerHeader(
+        //           child: Center(
+        //             child: Text(
+        //               'Home',
+        //               style: TextStyle(
+        //                   fontSize: 35,
+        //                   fontWeight: FontWeight.bold,
+        //                   color: AppColors.c0),
+        //             ),
+        //           ),
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.account_tree_rounded,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'Soil Properties AI',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {
+        //             Navigator.pushReplacement(
+        //               context,
+        //               MaterialPageRoute(builder: (context) => SoilPropsAi()),
+        //             )
+        //           },
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.account_circle,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'My Account',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {},
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.history_outlined,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'My History',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {},
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.settings_applications_outlined,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'Settings',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {},
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.logout_rounded,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'Logout',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {
+        //             SharedPreferences.getInstance().then((prefs) {
+        //               prefs.clear();
+        //               Navigator.pushAndRemoveUntil(
+        //                 context,
+        //                 MaterialPageRoute(builder: (context) => LoginPage()),
+        //                 (Route<dynamic> route) => false,
+        //               );
+        //             })
+        //           },
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.phone_outlined,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'Contact Us',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {},
+        //         ),
+        //         ListTile(
+        //           leading: Icon(
+        //             Icons.info_outline,
+        //             size: 35,
+        //             color: AppColors.c0,
+        //           ),
+        //           title: Text(
+        //             'About Us',
+        //             style: TextStyle(fontSize: 30, color: AppColors.c0),
+        //           ),
+        //           onTap: () => {},
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         bottomNavigationBar: GNav(
-          backgroundColor: (AppColors.c5)!,
-          rippleColor: (AppColors.c2)!,
+          backgroundColor: (AppColors.c5),
+          rippleColor: (AppColors.c2),
           hoverColor: (AppColors.c1),
           tabs: [
             GButton(
@@ -184,7 +185,7 @@ class _HomePageState extends State<HomePage> {
               iconColor: AppColors.c0,
             ),
             GButton(
-              icon: Icons.history_outlined,
+              icon: Icons.account_tree_rounded,
               iconSize: 35,
               iconColor: AppColors.c0,
             ),
