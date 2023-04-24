@@ -5,9 +5,11 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:soil_app/pages/about_us.dart';
 import 'package:soil_app/pages/acc_details.dart';
 import 'package:soil_app/pages/history.dart';
 import 'package:soil_app/pages/search.dart';
+import 'package:soil_app/pages/settings.dart';
 import 'package:soil_app/pages/signup_page.dart';
 import 'package:soil_app/utils/Colors.dart';
 
@@ -142,20 +144,8 @@ class _myAccState extends State<myAcc> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=>Search()));
-                  },
-                  child: Text(
-                    'Search',
-                    style: TextStyle(fontSize: 30, color: AppColors.c0),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context)=> Settings() ));
                   },
                   child: Text(
                     'Settings',
@@ -167,7 +157,8 @@ class _myAccState extends State<myAcc> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>AboutUs()),);
                   },
                   child: Text(
                     'About Us',

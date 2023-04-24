@@ -5,6 +5,7 @@ import 'package:soil_app/pages/history.dart';
 import 'package:soil_app/pages/image_pick.dart';
 import 'package:soil_app/pages/my_acc.dart';
 import 'package:soil_app/pages/login_page.dart';
+import 'package:soil_app/pages/search.dart';
 import 'package:soil_app/pages/soilProps.dart';
 import 'package:soil_app/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
   HomePage({super.key});
   static List<Widget> _widgetOptions = <Widget>[
     Container(),
+    Search(),
     ImgPicker(),
     SoilPropsAi(),
     myAcc(),
@@ -176,22 +178,27 @@ class _HomePageState extends State<HomePage> {
           tabs: [
             GButton(
               icon: Icons.home_outlined,
-              iconSize: 35,
+              iconSize: 30,
+              iconColor: AppColors.c0,
+            ),
+            GButton(
+              icon: Icons.search_outlined,
+              iconSize: 30,
               iconColor: AppColors.c0,
             ),
             GButton(
               icon: Icons.camera_outlined,
-              iconSize: 35,
+              iconSize: 30,
               iconColor: AppColors.c0,
             ),
             GButton(
               icon: Icons.account_tree_rounded,
-              iconSize: 35,
+              iconSize: 30,
               iconColor: AppColors.c0,
             ),
             GButton(
               icon: Icons.account_circle_outlined,
-              iconSize: 35,
+              iconSize: 30,
               iconColor: AppColors.c0,
             ),
           ],

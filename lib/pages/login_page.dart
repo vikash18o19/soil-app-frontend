@@ -68,10 +68,17 @@ class _LoginPageState extends State<LoginPage> {
       final refreshToken = data['refreshToken'];
       final user = data['user'];
       final userId = user['_id'];
+      final email = user['email'];
+      final name = user['name'];
+      final phone = user['phone'];
+
       await SharedPreferences.getInstance().then((prefs) {
         prefs.setString('token', token);
         prefs.setString('refreshToken', refreshToken);
         prefs.setString('userId', userId);
+        prefs.setString('email', email);
+        prefs.setString('name', name);
+        prefs.setString('phone', phone);
       });
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
