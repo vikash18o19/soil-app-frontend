@@ -7,16 +7,19 @@ import 'package:soil_app/pages/my_acc.dart';
 import 'package:soil_app/pages/login_page.dart';
 import 'package:soil_app/pages/search.dart';
 import 'package:soil_app/pages/soilProps.dart';
+import 'package:soil_app/pages/soilPropsAi.dart';
 import 'package:soil_app/utils/Colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'homeMain.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
   static List<Widget> _widgetOptions = <Widget>[
-    Container(),
+    HomeMain(),
     Search(),
     ImgPicker(),
-    SoilPropsAi(),
+    SoilProps(),
     myAcc(),
   ];
 
@@ -47,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.c1,
+        backgroundColor: AppColors.c3,
         appBar: AppBar(
           title: Text('The Soil App'),
           centerTitle: true,
@@ -175,6 +178,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: (AppColors.c5),
           rippleColor: (AppColors.c2),
           hoverColor: (AppColors.c1),
+          
           tabs: [
             GButton(
               icon: Icons.home_outlined,

@@ -24,37 +24,6 @@ class myAcc extends StatefulWidget {
 
 class _myAccState extends State<myAcc> {
 
-  late File _image;
-  bool _imageSelected = false;
-
-  Future<void> _saveImage() async {
-  final directory = await getApplicationDocumentsDirectory();
-  final path = directory.path;
-  final file = File('$path/profile.jpg');
-  await file.writeAsBytes(_image.readAsBytesSync());
-  }
-
-  void _selectImage() async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-  if (pickedFile != null) {
-    setState(() {
-      _image = File(pickedFile.path);
-      _imageSelected = true;
-    });
-  }
-  }
-  void _loadImage() async {
-  final directory = await getApplicationDocumentsDirectory();
-  final path = directory.path;
-  final file = File('$path/profile.jpg');
-  if (file.existsSync()) {
-    setState(() {
-      _image = file;
-      _imageSelected = true;
-    });
-  }
-  }
 
 
 
@@ -65,7 +34,7 @@ class _myAccState extends State<myAcc> {
     double sh = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
-        color: AppColors.c4,
+        color: AppColors.c3,
         height: sh,
         child: SafeArea(
           child: SingleChildScrollView(
@@ -80,39 +49,40 @@ class _myAccState extends State<myAcc> {
                   height: sw*0.5,
                   child: GestureDetector(
                     onTap: () {
-                      _selectImage();
                     },
                     child: CircleAvatar(
                       radius: 80,
-                      backgroundColor: AppColors.c3,
-                      backgroundImage: 
-                        // _imageSelected
-                        //   ? FileImage(_image)
-                        //   : 
-                          const AssetImage('lib/images/homepage/default-pro-pic.png'),
+                      backgroundColor: AppColors.c4,
+                      child: ClipOval(
+                        child: SizedBox(
+                          width: 150,
+                          height: 150,
+                          child: Image.asset('lib/images/homepage/default-pro-pic.png', color: AppColors.c0),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
-                  height: sh*0.1,
-                  width: sw,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.c5,
-                    ),
-                    onPressed: () {
-                      _selectImage();
-                    },
-                    child: Text('Change Photo',
-                              style: TextStyle(
-                                color: AppColors.c0,
-                                fontSize: 25,
-                              ),),
-                  ),
-                ),
+                // SizedBox(
+                //   height: sh*0.1,
+                //   width: sw,
+                //   child: ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: AppColors.c5,
+                //     ),
+                //     onPressed: () {
+                //       _selectImage();
+                //     },
+                //     child: Text('Change Photo',
+                //               style: TextStyle(
+                //                 color: AppColors.c0,
+                //                 fontSize: 25,
+                //               ),),
+                //   ),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),

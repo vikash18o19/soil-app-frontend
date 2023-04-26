@@ -73,6 +73,8 @@ flutter:
     - lib/images/
     - lib/images/loginscreen/
     - lib/images/imagePicker/
+    - lib/images/homepage/default-pro-pic.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

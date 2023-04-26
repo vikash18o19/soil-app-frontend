@@ -47,31 +47,29 @@ class _AccDetailsState extends State<AccDetails> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(onPressed: () {
-            Navigator.pushNamed(context, '/edit');
-          }, icon: Icon(Icons.edit)),
-        ],
+        
       ),
       body: Container(
-        child: Column(
-          children: [
-            const SizedBox(height: 30,),
-            Text('Name : ${_name}',style: TextStyle(
-                color: AppColors.c0,
-                fontSize: 35
-              ),),
-            const SizedBox(height: 30,),
-            Text('Email : \n ${_email}',style: TextStyle(
-                color: AppColors.c0,
-                fontSize: 35
-              ),),
-            const SizedBox(height: 30,),
-            Text('Phone : ${_phone}',style: TextStyle(
-                color: AppColors.c0,
-                fontSize: 35
-              ),)
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 25,),
+              Text('Name : ${_name}',style: TextStyle(
+                  color: AppColors.c0,
+                  fontSize: 25
+                ),),
+              const SizedBox(height: 35,),
+              Text('Email : \n ${_email}',style: TextStyle(
+                  color: AppColors.c0,
+                  fontSize: 25
+                ),),
+              const SizedBox(height: 35,),
+              Text('Phone : ${_phone}',style: TextStyle(
+                  color: AppColors.c0,
+                  fontSize: 25
+                ),)
+            ],
+          ),
         ),
       ),
     );

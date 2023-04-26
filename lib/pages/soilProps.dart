@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:soil_app/pages/soilPropsAi.dart';
 import 'package:soil_app/utils/Colors.dart';
 
 class SoilPropsAi extends StatefulWidget {
@@ -15,6 +16,7 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
   List<TextEditingController> _controllers = [];
   List<dynamic> _soilPropsData = [];
   bool _isData = false;
+  bool _isLoading= false;
 
   @override
   void initState() {
@@ -41,6 +43,9 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
   }
 
   Future<void> sendRequest(BuildContext context, String prompt) async {
+    setState(() {
+      _isLoading=true;
+    });
     print("request initiated");
     final url = Uri.parse(
         'https://soil-app-backend.azurewebsites.net/ai/extract-parameters'); // replace with your API URL
@@ -79,6 +84,9 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
         ),
       );
     }
+    setState(() {
+      _isLoading=false;
+    });
   }
 
   void _handleSubmit() {
@@ -91,11 +99,7 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
   Widget build(BuildContext context) {
     return _isData == false
         ? Scaffold(
-            backgroundColor: AppColors.c4,
-            appBar: AppBar(
-              title: Text("Soil Props (AI)"),
-              backgroundColor: AppColors.c5,
-            ),
+            backgroundColor: AppColors.c3,
             body: ListView.builder(
               shrinkWrap: true,
               itemCount: _controllers.length,
@@ -134,21 +138,31 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
             bottomNavigationBar: Padding(
               padding: EdgeInsets.all(8),
               child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(AppColors.c5),
-                ),
-                child: Text("Submit"),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.c5.withOpacity(0.3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 133, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(
+                        color: AppColors.c0,
+                        width: 1.0,
+                      )
+                  )),
+                child:_isLoading?CircularProgressIndicator(
+                  color: AppColors.c5,
+                ): Text("Submit",
+                    style: TextStyle(
+                      color: AppColors.c0,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
                 onPressed: _handleSubmit,
               ),
             ),
           )
         : Scaffold(
-            backgroundColor: AppColors.c4,
-            appBar: AppBar(
-              title: Text("Soil Props (AI)"),
-              backgroundColor: AppColors.c5,
-            ),
+            backgroundColor: AppColors.c3,
             body: ListView.builder(
               shrinkWrap: true,
               itemCount: _soilPropsData.length,
@@ -167,11 +181,23 @@ class _SoilPropsAiState extends State<SoilPropsAi> {
             bottomNavigationBar: Padding(
               padding: EdgeInsets.all(8),
               child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(AppColors.c5),
-                  ),
-                  child: Text("New Search"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.c5.withOpacity(0.3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 133, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(
+                        color: AppColors.c0,
+                        width: 1.0,
+                      )
+                  )),
+                  child: Text("New Search",
+                    style: TextStyle(
+                      color: AppColors.c0,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),),
                   onPressed: () => {
                         setState(() {
                           _isData = false;

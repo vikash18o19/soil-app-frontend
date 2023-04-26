@@ -161,7 +161,8 @@ class _ImgPicker extends State<ImgPicker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.c2,
+      backgroundColor: AppColors.c3,
+      appBar: AppBar(title: const Text("Image Picker"),backgroundColor: AppColors.c5),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Center(
@@ -187,52 +188,68 @@ class _ImgPicker extends State<ImgPicker> {
                       height: 30,
                     ),
                     loc_avail == false
-                        ? Text(prediction)
-                        : Text('Prediction: ' +
-                            '$prediction' +
-                            ' location: ' +
-                            '$lat' +
-                            ' , ' +
-                            '$long'),
+                        ? Text(prediction, style: TextStyle(color: AppColors.c0 , fontSize: 20),)
+                        : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Prediction: ' +
+                              '$prediction' +
+                              ' \n location: ' +
+                              '$lat' +
+                              ' , ' +
+                              '$long',  style: TextStyle(color: AppColors.c0 , fontSize: 20),),
+                        ),
                     const SizedBox(
                       height: 30,
                     ),
                     ElevatedButton.icon(
                         onPressed: () => pickimagefromgallery(),
-                        style: ButtonStyle(
-                            minimumSize:
-                                MaterialStatePropertyAll(Size(220, 40)),
-                            backgroundColor:
-                                MaterialStatePropertyAll(AppColors.c4)),
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.c5.withOpacity(0.3),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 80, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          side: BorderSide(
+                            color: AppColors.c0,
+                            width: 1.0,
+                          )
+                      )),
                         icon: SizedBox.square(
                           dimension: 35,
                           child: Icon(Icons.image),
                         ),
-                        label: const Text(
+                        label:  Text(
                           'Pick Image',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
+                              color: AppColors.c0 , fontSize: 20),
                         )),
                     const SizedBox(
                       height: 10,
                     ),
                     ElevatedButton.icon(
                         onPressed: () => pickimagefromcamera(),
-                        style: ButtonStyle(
-                            minimumSize:
-                                MaterialStatePropertyAll(Size(220, 40)),
-                            backgroundColor:
-                                MaterialStatePropertyAll(AppColors.c4)),
+                        style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.c5.withOpacity(0.3),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 80, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          side: BorderSide(
+                            color: AppColors.c0,
+                            width: 1.0,
+                          )
+                      )),
                         icon: SizedBox.square(
                           dimension: 35,
                           child: Icon(
                             Icons.camera_alt_rounded,
                           ),
                         ),
-                        label: const Text(
+                        label:  Text(
                           'Open Camera',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
+                              color: AppColors.c0,
+                              fontSize: 20,),
                         )),
                     const SizedBox(
                       height: 10,
@@ -270,19 +287,25 @@ class _ImgPicker extends State<ImgPicker> {
                                 );
                               });
                             },
-                            style: ButtonStyle(
-                                minimumSize:
-                                    MaterialStatePropertyAll(Size(220, 40)),
-                                backgroundColor:
-                                    MaterialStatePropertyAll(AppColors.c4)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.c5.withOpacity(0.3),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 80, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                side: BorderSide(
+                                  color: AppColors.c0,
+                                  width: 1.0,
+                                )
+                            )),
                             icon: SizedBox.square(
                               dimension: 35,
                               child: Icon(Icons.upload_file_rounded),
                             ),
-                            label: const Text(
+                            label:  Text(
                               'Upload Image',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
+                                  color: AppColors.c0 , fontSize: 20),
                             ))
                         : image != null
                             ? ElevatedButton.icon(
@@ -295,16 +318,22 @@ class _ImgPicker extends State<ImgPicker> {
                                         print('Error: $error');
                                       })
                                     },
-                                style: const ButtonStyle(
-                                    minimumSize:
-                                        MaterialStatePropertyAll(Size(220, 40)),
-                                    backgroundColor:
-                                        MaterialStatePropertyAll(Colors.brown)),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.c5.withOpacity(0.3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 80, vertical: 16),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                    side: BorderSide(
+                                      color: AppColors.c0,
+                                      width: 1.0,
+                                    )
+                                )),
                                 icon: SizedBox.square(
                                   dimension: 35,
                                   child: Icon(Icons.save_rounded),
                                 ),
-                                label: const Text("Save Prediction"))
+                                label: Text("Save Prediction", style: TextStyle(color: AppColors.c0 , fontSize: 20),))
                             : SizedBox(
                                 height: 30,
                               ),
