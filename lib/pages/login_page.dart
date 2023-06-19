@@ -23,6 +23,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _isPasswordHidden = true;
 
   bool _loginProcess = false;
   bool isTapped = false;
@@ -67,10 +68,17 @@ class _LoginPageState extends State<LoginPage> {
       final refreshToken = data['refreshToken'];
       final user = data['user'];
       final userId = user['_id'];
+      final email = user['email'];
+      final name = user['name'];
+      final phone = user['phone'];
+
       await SharedPreferences.getInstance().then((prefs) {
         prefs.setString('token', token);
         prefs.setString('refreshToken', refreshToken);
         prefs.setString('userId', userId);
+        prefs.setString('email', email);
+        prefs.setString('name', name);
+        prefs.setString('phone', phone);
       });
       // navigate to HomePage and prevent user from going back
       Navigator.pushAndRemoveUntil(
@@ -95,6 +103,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+    setState(() {
+      _loginProcess = false;
+    });
   }
 
   @override
@@ -156,7 +167,27 @@ class _LoginPageState extends State<LoginPage> {
                   MyTextField(
                     controller: passwordController,
                     hintText: 'Password',
-                    obscureText: true,
+                    obscureText: _isPasswordHidden,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () => {
+                      setState(
+                        () {
+                          _isPasswordHidden = !_isPasswordHidden;
+                        },
+                      )
+                    },
+                    child: Text(
+                      'Show Password',
+                      style: TextStyle(
+                        color: AppColors.c0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -183,53 +214,50 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   // sign in
-                  _loginProcess==false?
-                  GestureDetector(
-                    onTapDown: (_) => _onTapDown(),
-                    onTapUp: (_) => _onTapUp(),
-                    onTapCancel: () => _onTapCancel(),
-                    child: ElevatedButton(
-                      onPressed: () => {
-                        setState(() {
-                          _loginProcess = true;
-                        }),
-                        sendRequest(context, usernameController.text,
-                            passwordController.text),
-                        setState(() {
-                          _loginProcess = false;
-                        }),
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => HomePage(),
-                        //   ),
-                        // ),
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: isTapped
-                            ? AppColors.c0.withOpacity(0.3)
-                            : Colors.transparent,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 133, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            side: BorderSide(
-                              color: AppColors.c0,
-                              width: 1.0,
-                            )),
-                      ),
-                      
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                          color: AppColors.c0,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                  :CircularProgressIndicator(color: AppColors.c1),
+                  _loginProcess == false
+                      ? GestureDetector(
+                          onTapDown: (_) => _onTapDown(),
+                          onTapUp: (_) => _onTapUp(),
+                          onTapCancel: () => _onTapCancel(),
+                          child: ElevatedButton(
+                            onPressed: () => {
+                              setState(() {
+                                _loginProcess = true;
+                              }),
+                              sendRequest(context, usernameController.text,
+                                  passwordController.text),
+
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => HomePage(),
+                              //   ),
+                              // ),
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: isTapped
+                                  ? AppColors.c0.withOpacity(0.3)
+                                  : Colors.transparent,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 133, vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  side: BorderSide(
+                                    color: AppColors.c0,
+                                    width: 1.0,
+                                  )),
+                            ),
+                            child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                color: AppColors.c0,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        )
+                      : CircularProgressIndicator(color: AppColors.c1),
                   const SizedBox(
                     height: 20,
                   ),
