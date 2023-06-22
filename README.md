@@ -1,4 +1,4 @@
-# soil_app
+# The Soil App
 
 Frontend of The Soil App 2023 - major project BIT Mesra Final Year.
 
