@@ -1,16 +1,10 @@
 # soil_app
 
-A new Flutter project.
+Frontend of The Soil App 2023 - major project BIT Mesra Final Year.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Clone this repository into your local system.
+Run 'flutter pub install' to install all the dependencies.
+Then run 'flutter start' and select your target platform.
+Preferred platform - Android
